@@ -5,8 +5,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  email_destinatario: 'janison6@gmail.com' # Substitua pelo seu email de teste
-  smtp_server: 'smtp.gmail.com' # Substitua pelo seu servidor SMTP ou pelo servidor do Mailtrap
+  email_destinatario: 'seu_email@exemplo.com' # Substitua pelo seu email de teste
+  smtp_server: 'smtp.exemplo.com' # Substitua pelo seu servidor SMTP ou pelo servidor do Mailtrap
 
 stages:
 - stage: TestEmail
@@ -14,6 +14,11 @@ stages:
   jobs:
   - job: SendEmail
     steps:
+    - script: |
+        sudo apt-get update
+        sudo apt-get install -y mailutils
+      displayName: 'Install mailutils'
+
     - script: |
         echo "Enviando email de teste..."
         echo "Subject: Teste de Email do Pipeline" | mail -s "Teste de Email" $(email_destinatario) -S $(smtp_server)
